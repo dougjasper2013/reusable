@@ -1,4 +1,5 @@
-import { useState, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import { type ComponentPropsWithoutRef, useState, type ReactNode } from 'react';
+import type { IdValue } from './types';
 
 type Props<Data> = {
   data: Data[];
@@ -16,7 +17,14 @@ export function Checklist<Data>({
   renderItem,
   ...ulProps
 }: Props<Data>) {
-  const [checkedIds, setCheckedIds] = useState<IdValue[]>([]);  
+  const [checkedIds, setCheckedIds] = useState<IdValue[]>([]);
+  const handleCheckChange = (checkedId: IdValue) => () => {
+    const isChecked = checkedIds.includes(checkedId);
+    const newCheckedIds = isChecked
+      ? checkedIds.filter((itemCheckedid) => itemCheckedid !== checkedId)
+      : checkedIds.concat(checkedId);
+    setCheckedIds(newCheckedIds);
+  };
   return (
     <ul {...ulProps}>
       {data.map((item) => {
@@ -34,8 +42,19 @@ export function Checklist<Data>({
         const secondaryText = item[secondary] as unknown;
         return (
           <li key={idValue}>
-            <div className="primary">{primaryText}</div>
-            {typeof secondaryText === 'string' && <div className="secondary">{secondaryText}</div>}
+            <label>
+              <input
+                type="checkbox"
+                checked={checkedIds.includes(idValue)}
+                onChange={handleCheckChange(idValue)}
+              />
+              <div>
+                <div className="primary">{primaryText}</div>
+                {typeof secondaryText === 'string' && (
+                  <div className="secondary">{secondaryText}</div>
+                )}
+              </div>
+            </label>
           </li>
         );
       })}
