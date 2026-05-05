@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import { useState, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 
 type Props<Data> = {
   data: Data[];
@@ -16,6 +16,7 @@ export function Checklist<Data>({
   renderItem,
   ...ulProps
 }: Props<Data>) {
+  const [checkedIds, setCheckedIds] = useState<IdValue[]>([]);  
   return (
     <ul {...ulProps}>
       {data.map((item) => {
