@@ -16,7 +16,21 @@ function App() {
           width: '300px',
           maxHeight: '380px',
           overflowY: 'auto'
-        }} />
+        }} 
+        renderItem={(item) => {
+          <li key={item.id}>
+            <div className="primary">
+              {item.name}, {" "}
+              <small
+                style={{
+                  textTransform: "uppercase"
+                }}>
+                  {item.role}
+                </small>
+            </div>
+          </li>
+        }}
+      />
     </div>
   );
 }
