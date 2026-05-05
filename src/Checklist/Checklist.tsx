@@ -14,7 +14,7 @@ export function Checklist<Data>({
     return (
         <ul>
             {data.map((item) => {
-                const idValue = item(id) as unknown;
+                const idValue = item[id] as unknown;
                 if (typeof idValue != 'string' && typeof idValue != 'number')
                 {
                     return null;
